@@ -296,7 +296,7 @@ class Database:
         return row
         cursor.close()
 
-    def insert_visiter(self, lastName, name, surname, dateOfBirth, email):
+    def insert_visiter(self, surname, name, lastName, dateOfBirth, email):
         """
         Добавление нового клиента
         :param fio: ФИО
@@ -307,7 +307,7 @@ class Database:
         :return: None
         """
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO посетитель VALUES (NULL, %s, %s, %s, %s, %s)", (lastName, name, surname, dateOfBirth, email))
+        cursor.execute("INSERT INTO посетитель VALUES (NULL, %s, %s, %s, %s, %s)", (surname, name, lastName, dateOfBirth, email))
         self.conn.commit()
         cursor.close()
 

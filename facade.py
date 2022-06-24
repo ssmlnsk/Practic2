@@ -232,7 +232,7 @@ class Facade:
         """
         return self.db.select_history()
 
-    def insert_visiter(self, fio, passportData, dateOfBirth, address, email):
+    def insert_visiter(self, surname, name, lastName, dateOfBirth, email):
         """
         Добавление нового клиента
         :param fio: ФИО
@@ -242,7 +242,7 @@ class Facade:
         :param email: E-mail
         :return: None
         """
-        self.db.insert_visiter(fio, passportData, dateOfBirth, address, email)
+        self.db.insert_visiter(surname, name, lastName, dateOfBirth, email)
 
     def read_pictures(self):
         """

@@ -89,7 +89,7 @@ class MainWindow(QMainWindow):
         Обновление таблицы клиентов
         :return:
         """
-        self.updateTableVisitres()
+        self.updateTableVisiters()
         self.page.setCurrentIndex(3)
 
     def updateTableVisiters(self):
@@ -97,11 +97,11 @@ class MainWindow(QMainWindow):
         Отвечает за обновление таблицы клиентов
         :return:
         """
-        self.table_serv.clear()
-        rec = self.facade.read_clients()
-        self.ui.table_clients.setColumnCount(6)
-        self.ui.table_clients.setRowCount(len(rec))
-        self.ui.table_clients.setHorizontalHeaderLabels(['Код посетителя', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Email'])
+        self.table_visiters.clear()
+        rec = self.facade.read_visiter()
+        self.ui.table_visiters.setColumnCount(6)
+        self.ui.table_visiters.setRowCount(len(rec))
+        self.ui.table_visiters.setHorizontalHeaderLabels(['Код посетителя', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Email'])
 
         for i, visiter in enumerate(rec):
             for x, field in enumerate(visiter):
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
                 item.setText(str(field))
                 if x == 0:
                     item.setFlags(Qt.ItemIsEnabled)
-                self.ui.table_clients.setItem(i, x, item)
+                self.ui.table_visiters.setItem(i, x, item)
 
     def updateTablePictures(self):
         """
@@ -594,10 +594,10 @@ class MainWindow(QMainWindow):
         Создает и показывает диалоговое окно создания нового клиента.
         :return:
         """
-        dialog_client = DialogNewVisiter(self)
-        dialog_client.setWindowTitle("Добавление нового клиента")
-        dialog_client.show()
-        dialog_client.exec_()
+        dialog_visiter = DialogNewVisiter(self)
+        dialog_visiter.setWindowTitle("Добавление нового клиента")
+        dialog_visiter.show()
+        dialog_visiter.exec_()
 
 
 class DialogAuth(QDialog):
@@ -767,11 +767,11 @@ class DialogNewVisiter(QDialog):
         Отвечает за добавление клиента в базу данных
         :return:
         """
-        self.surname = self.ui.edit_email.text()
-        self.name = self.ui.edit_fio.text()
-        self.lastName = self.ui.edit_address.text()
+        self.surname = self.ui.edit_surname.text()
+        self.name = self.ui.edit_name.text()
+        self.lastName = self.ui.edit_lastName.text()
         self.dateOfBirth = self.ui.date_birth.dateTime().toString('yyyy-MM-dd')
-        self.email = self.ui.edit_passport.text()
+        self.email = self.ui.edit_email.text()
 
         if self.surname != '' and self.name != '' and self.lastName != '' and self.dateOfBirth != '' and self.email != '':
             self.facade.insert_visiter(self.surname, self.name, self.lastName, self.dateOfBirth, self.email)

@@ -229,7 +229,7 @@ font: 9pt &quot;Comic Sans MS&quot;;</string>
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_add_client">
+        <widget class="QPushButton" name="btn_add_visiter">
          <property name="styleSheet">
           <string notr="true">background-color: rgb(255,121,0);
 font: 9pt &quot;Comic Sans MS&quot;;</string>
