@@ -443,7 +443,7 @@ class MainWindow(QMainWindow):
         lastName = fio[2]
 
         self.number_title = QListWidgetItem("Номер билета:")
-        self.number = QListWidgetItem(str(self.spin_num_ticket.value()))
+        self.number = QListWidgetItem(str(self.facade.select_number_ticket()))
         self.date_visit_title = QListWidgetItem("Дата посещения:")
         self.date_visit = str(self.dateOfVisit.dateTime().toString('yyyy-MM-dd'))
         self.type_ticket_title = QListWidgetItem("Категория билета:")
@@ -526,7 +526,7 @@ class MainWindow(QMainWindow):
         EAN13 = barcode.get_barcode_class('code39')
         EAN13(str(100000902922), writer=ImageWriter()).write(rv)
 
-        temp = str(self.spin_num_ticket.value()) + str(self.date_visit)
+        temp = str(self.facade.select_number_ticket()) + str(self.date_visit)
         temp_middle = temp.replace(".", "")
         temp_end = temp_middle.replace("-", "")
 
@@ -545,8 +545,6 @@ class MainWindow(QMainWindow):
         icon = QtGui.QIcon('codes/' + self.name_code + '.png')
         item = QtWidgets.QListWidgetItem(icon, "")
         self.add_new_ticket.addItem(item)
-
-        self.mes_box('Штрих-код создан.')
 
     def mes_box(self, text):
         """

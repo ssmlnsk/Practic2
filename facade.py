@@ -266,3 +266,6 @@ class Facade:
         :return: None
         """
         self.db.insert_time_entry(login, time)
+
+    def select_number_ticket(self):
+        return self.db.select_number_ticket()

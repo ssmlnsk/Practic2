@@ -51,7 +51,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Горнолыжный курорт «Игора»    </string>
+          <string>Картинная галерея</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

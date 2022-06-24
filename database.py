@@ -481,7 +481,16 @@ class Database:
         return rows
         cursor.close()
 
-
-if __name__ == '__main__':
-    db = Database()
-    print(db.get_types_ticket_id('Взрослый'))
+    def select_number_ticket(self):
+        """
+        Получение истории входа сотрудников
+        :return:
+        """
+        cursor = self.conn.cursor()
+        cursor.execute(f"SELECT MAX(`Код билета`) FROM Билет")
+        rows = cursor.fetchone()
+        for i in rows:
+            temp = str(i)[0:-8]
+            i = int(temp) + 1
+            return i
+        cursor.close()

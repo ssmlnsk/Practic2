@@ -501,28 +501,6 @@
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,10">
-              <item>
-               <widget class="QLabel" name="label_7">
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255,192,0);
-font: 9pt &quot;Comic Sans MS&quot;;</string>
-                </property>
-                <property name="text">
-                 <string>Введите номер билета: </string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="spin_num_ticket">
-                <property name="maximum">
-                 <number>999999</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,100">
               <item>
                <widget class="QLabel" name="label_15">
