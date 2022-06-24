@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         self.ui = uic.loadUi("main.ui", self)
 
         self.page = self.ui.stackedWidget_main
-        self.page_id = [0]  # тут будут индексы доступных страничек после авторизации для сотрудника
+        self.page_id = [0]  # индексы доступных страничек после авторизации для сотрудника
         self.now_page = 0
 
         self.page.setCurrentIndex(self.page_id[self.now_page])
