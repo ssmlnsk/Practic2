@@ -121,7 +121,7 @@
          <string notr="true">font: &quot;Comic Sans MS&quot;;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>7</number>
         </property>
         <widget class="QWidget" name="page_1_for_all">
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1270,6 +1270,182 @@ font: 9pt &quot;Comic Sans MS&quot;;</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_30">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="0">
+            <item>
+             <widget class="QLabel" name="label_12">
+              <property name="font">
+               <font>
+                <family>Comic Sans MS</family>
+                <pointsize>11</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 11pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Просмотр выставленных картин</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,100">
+            <item>
+             <widget class="QLabel" name="label_19">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,192,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Картина:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_exhibited_picture"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="0,100">
+            <item>
+             <widget class="QLabel" name="label_20">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,192,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Выставка:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_exposition"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="0,100">
+            <item>
+             <widget class="QLabel" name="label_21">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,192,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Зал:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_room"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="table_exhibited_pictures"/>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_25">
+            <item>
+             <spacer name="horizontalSpacer_23">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_new_exhibited_picture">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,121,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Добавить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_24">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_delete_exhibited_picture">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,121,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_25">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_save_exhibited_pictures">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255,121,0);
+font: 9pt &quot;Comic Sans MS&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Сохранить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_26">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>

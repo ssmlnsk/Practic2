@@ -58,9 +58,16 @@ class MainWindow(QMainWindow):
         self.ui.btn_delete_picture.clicked.connect(self.delete_picture)
         self.ui.btn_save_pictures.clicked.connect(self.save_pictures)
 
+        self.ui.btn_new_exhibited_picture.clicked.connect(self.new_exhibited_picture)
+        self.ui.btn_delete_exhibited_picture.clicked.connect(self.delete_exhibited_picture)
+        self.ui.btn_save_exhibited_pictures.clicked.connect(self.save_exhibited_pictures)
+
         self.build_combobox_visiters()
         self.build_combobox_type_ticket()
         self.build_combobox_expositions()
+
+        self.build_combobox_exhibited_picture()
+        self.build_combobox_room()
 
         self.ui.btn_new_ticket.clicked.connect(self.create_new_ticket)
         self.ui.btn_save_ticket.clicked.connect(self.save_ticket)
@@ -70,6 +77,7 @@ class MainWindow(QMainWindow):
         self.updateTablePictures()
         self.updateTablePainters()
         self.updateTableExposition()
+        self.updateTableExhibitedPictures()
         self.updateTableHistory()
 
     def exit(self):
@@ -85,8 +93,8 @@ class MainWindow(QMainWindow):
 
     def page_all_visiters(self):
         """
-        Отвечает за переход к странице с таблицей клиентов
-        Обновление таблицы клиентов
+        Отвечает за переход к странице с таблицей посетителей
+        Обновление таблицы посетителей
         :return:
         """
         self.updateTableVisiters()
@@ -94,7 +102,7 @@ class MainWindow(QMainWindow):
 
     def updateTableVisiters(self):
         """
-        Отвечает за обновление таблицы клиентов
+        Отвечает за обновление таблицы посетителей.
         :return:
         """
         self.table_visiters.clear()
@@ -113,7 +121,7 @@ class MainWindow(QMainWindow):
 
     def updateTablePictures(self):
         """
-        Отвечает за обновление таблицы услуг
+        Отвечает за обновление таблицы картин.
         :return:
         """
         self.table_pictures.clear()
@@ -132,7 +140,7 @@ class MainWindow(QMainWindow):
 
     def updateTablePainters(self):
         """
-        Отвечает за обновление таблицы услуг
+        Отвечает за обновление таблицы художников.
         :return:
         """
         self.table_painters.clear()
@@ -151,7 +159,7 @@ class MainWindow(QMainWindow):
 
     def updateTableExposition(self):
         """
-        Отвечает за обновление таблицы услуг
+        Отвечает за обновление таблицы выставок.
         :return:
         """
         self.table_exposition.clear()
@@ -167,6 +175,25 @@ class MainWindow(QMainWindow):
                 if x == 0:
                     item.setFlags(Qt.ItemIsEnabled)
                 self.ui.table_exposition.setItem(i, x, item)
+
+    def updateTableExhibitedPictures(self):
+        """
+        Отвечает за обновление таблицы выставленных картин.
+        :return:
+        """
+        self.table_exhibited_pictures.clear()
+        rec = self.facade.read_exhibited_picture()
+        self.ui.table_exhibited_pictures.setColumnCount(3)
+        self.ui.table_exhibited_pictures.setRowCount(len(rec))
+        self.ui.table_exhibited_pictures.setHorizontalHeaderLabels(['Картина', 'Выставка', 'Зал'])
+
+        for i, exposition in enumerate(rec):
+            for x, field in enumerate(exposition):
+                item = QTableWidgetItem()
+                item.setText(str(field))
+                if x == 0:
+                    item.setFlags(Qt.ItemIsEnabled)
+                self.ui.table_exhibited_pictures.setItem(i, x, item)
 
     def updateTableHistory(self):
         """
@@ -189,7 +216,7 @@ class MainWindow(QMainWindow):
 
     def new_exposition(self):
         """
-        Создает и показывает диалоговое окно добавления новой картины.
+        Отвечает за добавления новой выставки.
         :return:
         """
         theme = self.ui.edit_theme.text()
@@ -201,7 +228,7 @@ class MainWindow(QMainWindow):
 
     def delete_exposition(self):
         """
-        Отвечает за удаление выбранной услуги
+        Отвечает за удаление выбранной выставки.
         :return:
         """
         SelectedRow = self.table_exposition.currentRow()
@@ -230,11 +257,52 @@ class MainWindow(QMainWindow):
             ix = self.table_exposition.model().index(-1, -1)
             self.table_exposition.setCurrentIndex(ix)
 
-    def new_picture(self):
+    def new_exhibited_picture(self):
         """
-        Создает и показывает диалоговое окно добавления новой картины.
+        Создает и показывает диалоговое окно добавления новой картины на выставку.
         :return:
         """
+        temp_picture = self.ui.comboBox_exhibited_picture.currentText()
+        temp_exposition = self.ui.comboBox_exposition.currentText()
+        temp_room = self.ui.comboBox_room.currentText()
+        picture = self.facade.get_exhibited_picture_id(temp_picture)
+        exposition = self.facade.get_code_exposition(temp_exposition)
+        room = self.facade.get_room_id(temp_room)
+        self.facade.insert_exhibited_picture(picture, exposition, room)
+        self.updateTableExhibitedPictures()
+
+    def delete_exhibited_picture(self):
+        """
+        Отвечает за удаление выбранной картины, выставленной на выставке.
+        :return:
+        """
+        SelectedRow = self.table_exhibited_pictures.currentRow()
+        rowcount = self.table_exhibited_pictures.rowCount()
+        colcount = self.table_exhibited_pictures.columnCount()
+
+        if rowcount == 0:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("В таблице нет данных!")
+            msg.setWindowTitle("Ошибка")
+            msg.setStandardButtons(QMessageBox.Ok)
+            retval = msg.exec_()
+
+        elif SelectedRow == -1:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("Выберите поле для удаления!")
+            msg.setWindowTitle("Ошибка")
+            msg.setStandardButtons(QMessageBox.Ok)
+            retval = msg.exec_()
+
+        else:
+            for col in range(1, colcount):
+                self.table_exhibited_pictures.setItem(SelectedRow, col, QTableWidgetItem(''))
+            ix = self.table_exhibited_pictures.model().index(-1, -1)
+            self.table_exhibited_pictures.setCurrentIndex(ix)
+
+    def new_picture(self):
         dialog_client = DialogNewPicture(self)
         dialog_client.setWindowTitle("Добавление новой картины")
         dialog_client.show()
@@ -242,7 +310,7 @@ class MainWindow(QMainWindow):
 
     def delete_picture(self):
         """
-        Отвечает за удаление выбранной услуги
+        Отвечает за удаление выбранной картины.
         :return:
         """
         SelectedRow = self.table_pictures.currentRow()
@@ -283,7 +351,7 @@ class MainWindow(QMainWindow):
 
     def delete_painter(self):
         """
-        Отвечает за удаление выбранной услуги
+        Отвечает за удаление выбранного художника.
         :return:
         """
         SelectedRow = self.table_painters.currentRow()
@@ -344,7 +412,7 @@ class MainWindow(QMainWindow):
 
     def save_exposition(self):
         """
-        Отвечает за сохранение данных об услугах в базу данных
+        Отвечает за сохранение данных о выставках в базу данных.
         Обновление таблицы в интерфейсе
         :return:
         """
@@ -355,10 +423,11 @@ class MainWindow(QMainWindow):
             else:
                 self.facade.delete_exposition(int(string[0]))
         self.updateTableExposition()
+        self.build_combobox_expositions()
 
     def getFromTablePainter(self):
         """
-        Получение данных из таблицы, чтобы потом записать их в БД
+        Получение данных из таблицы, чтобы потом записать их в БД.
         :return: data
         """
         rows = self.table_painters.rowCount()
@@ -371,10 +440,25 @@ class MainWindow(QMainWindow):
             data.append(tmp)
         return data
 
+    def getFromTableExhibitedPictures(self):
+        """
+        Получение данных из таблицы, чтобы потом записать их в БД.
+        :return: data
+        """
+        rows = self.table_exhibited_pictures.rowCount()
+        cols = self.table_exhibited_pictures.columnCount()
+        data = []
+        for row in range(rows):
+            tmp = []
+            for col in range(cols):
+                tmp.append(self.table_exhibited_pictures.item(row, col).text())
+            data.append(tmp)
+        return data
+
     def save_pictures(self):
         """
-        Отвечает за сохранение данных об услугах в базу данных
-        Обновление таблицы в интерфейсе
+        Отвечает за сохранение данных о картинах в базу данных.
+        Обновление таблицы в интерфейсе.
         :return:
         """
         data = self.getFromTablePicture()
@@ -384,11 +468,12 @@ class MainWindow(QMainWindow):
             else:
                 self.facade.delete_picture(int(string[0]))
         self.updateTablePictures()
+        self.build_combobox_exhibited_picture()
 
     def save_painters(self):
         """
-        Отвечает за сохранение данных об услугах в базу данных
-        Обновление таблицы в интерфейсе
+        Отвечает за сохранение данных о художниках в базу данных.
+        Обновление таблицы в интерфейсе.
         :return:
         """
         data = self.getFromTablePainter()
@@ -399,9 +484,23 @@ class MainWindow(QMainWindow):
                 self.facade.delete_painter(int(string[0]))
         self.updateTablePainters()
 
+    def save_exhibited_pictures(self):
+        """
+        Отвечает за сохранение данных о выставленных картинах в базу данных.
+        Обновление таблицы в интерфейсе.
+        :return:
+        """
+        data = self.getFromTableExhibitedPictures()
+        for string in data:
+            if string[1] != '':
+                self.facade.update_exhibited_picture(string[0], string[1], string[2])
+            else:
+                self.facade.delete_exhibited_picture(string[0])
+        self.updateTableExhibitedPictures()
+
     def build_combobox_visiters(self):
         """
-        Добавление списка клиентов в ComboBox
+        Добавление списка посетителей в ComboBox.
         :return:
         """
         visiters = self.facade.get_visiters()
@@ -412,18 +511,19 @@ class MainWindow(QMainWindow):
 
     def build_combobox_expositions(self):
         """
-        Добавление списка клиентов в ComboBox
+        Добавление списка выставок в ComboBox.
         :return:
         """
         expositions = self.facade.get_expositions()
         self.comboBox_expositions.clear()
         if self.comboBox_expositions is not None:
             self.comboBox_expositions.addItems(expositions)
+            self.comboBox_exposition.addItems(expositions)
         logging.log(logging.INFO, 'ComboBox "Выставки" обновлён')
 
     def build_combobox_type_ticket(self):
         """
-        Добавление списка услуг в ComboBox
+        Добавление списка категорий билетов в ComboBox.
         :return:
         """
         types_ticket = self.facade.get_types_ticket()
@@ -432,9 +532,31 @@ class MainWindow(QMainWindow):
             self.comboBox_type_ticket.addItems(types_ticket)
         logging.log(logging.INFO, 'ComboBox "Категории" обновлён')
 
+    def build_combobox_exhibited_picture(self):
+        """
+        Добавление списка картин для выставления на выставку в ComboBox.
+        :return:
+        """
+        exhibited_picture = self.facade.get_exhibited_picture()
+        self.comboBox_exhibited_picture.clear()
+        if self.comboBox_exhibited_picture is not None:
+            self.comboBox_exhibited_picture.addItems(exhibited_picture)
+        logging.log(logging.INFO, 'ComboBox "Категории" обновлён')
+
+    def build_combobox_room(self):
+        """
+        Добавление списка залов в ComboBox.
+        :return:
+        """
+        room = self.facade.get_room()
+        self.comboBox_room.clear()
+        if self.comboBox_room is not None:
+            self.comboBox_room.addItems(room)
+        logging.log(logging.INFO, 'ComboBox "Категории" обновлён')
+
     def create_new_ticket(self):
         """
-        Оформление нового заказа и его показ в ListWidget
+        Оформление нового билета и его показ в ListWidget.
         :return:
         """
         fio = self.comboBox_visiters.currentText().split()
@@ -473,7 +595,7 @@ class MainWindow(QMainWindow):
 
     def save_ticket(self):
         """
-        Отвечает за сохранение заказа в базу данных
+        Отвечает за сохранение билета в базу данных.
         :return:
         """
         ignore = [0, 2, 4, 6, 8, 10, 12]
@@ -518,7 +640,7 @@ class MainWindow(QMainWindow):
 
     def generateCode(self):
         """
-        Отвечает за создание штрих-кода по номеру, дате и времени заказа
+        Отвечает за создание штрих-кода по номеру и дате продажи билета.
         Создаётся в форматах .png и .pdf
         :return:
         """
@@ -589,7 +711,7 @@ class MainWindow(QMainWindow):
 
     def oped_new_visiter(self):
         """
-        Создает и показывает диалоговое окно создания нового клиента.
+        Создает и показывает диалоговое окно создания нового посетителя.
         :return:
         """
         dialog_visiter = DialogNewVisiter(self)
@@ -742,7 +864,7 @@ class DialogAuth(QDialog):
                     self.parent().page_id = [0, 2]
                 else:   # Администратор
                     self.parent().hide()
-                    self.parent().page_id = [0, 1, 4, 5, 6, 7]
+                    self.parent().page_id = [0, 1, 4, 5, 6, 7, 8]
                 self.parent().show()
                 self.parent().ui.lbl_photo.setPixmap(pix)
                 self.parent().now_login = auth_log
@@ -762,7 +884,7 @@ class DialogNewVisiter(QDialog):
 
     def add(self):
         """
-        Отвечает за добавление клиента в базу данных
+        Отвечает за добавление посетителя в базу данных
         :return:
         """
         self.surname = self.ui.edit_surname.text()
@@ -806,7 +928,7 @@ class DialogNewPicture(QDialog):
 
     def add(self):
         """
-        Отвечает за добавление клиента в базу данных
+        Отвечает за добавление картины в базу данных
         :return:
         """
         self.name = self.ui.edit_name.text()
@@ -834,7 +956,7 @@ class DialogNewPicture(QDialog):
 
     def build_combobox_painter(self):
         """
-        Добавление списка услуг в ComboBox
+        Добавление списка художников в ComboBox.
         :return:
         """
         painters = []
@@ -856,7 +978,7 @@ class DialogNewPicture(QDialog):
 
     def build_combobox_technic(self):
         """
-        Добавление списка услуг в ComboBox
+        Добавление списка техник в ComboBox.
         :return:
         """
         technic = self.facade.get_technic()
@@ -867,7 +989,7 @@ class DialogNewPicture(QDialog):
 
     def build_combobox_type(self):
         """
-        Добавление списка услуг в ComboBox
+        Добавление списка типов в ComboBox.
         :return:
         """
         type = self.facade.get_type()
@@ -902,7 +1024,7 @@ class DialogNewPainter(QDialog):
 
     def add(self):
         """
-        Отвечает за добавление клиента в базу данных
+        Отвечает за добавление художника в базу данных.
         :return:
         """
         self.surname = self.ui.edit_surname.text()
