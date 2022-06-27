@@ -1314,7 +1314,7 @@ font: 9pt &quot;Comic Sans MS&quot;;</string>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,100">
+           <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0">
             <item>
              <widget class="QLabel" name="label_19">
               <property name="styleSheet">
@@ -1332,7 +1332,7 @@ font: 9pt &quot;Comic Sans MS&quot;;</string>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="0,100">
+           <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="0,0">
             <item>
              <widget class="QLabel" name="label_20">
               <property name="styleSheet">
