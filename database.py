@@ -340,7 +340,7 @@ class Database:
 
     def select_history(self):
         cursor = self.conn.cursor()
-        cursor.execute(f"SELECT * FROM `история входа`")
+        cursor.execute(f"SELECT `Время входа`, `Логин` FROM `история входа`")
         rows = cursor.fetchall()
         return rows
         cursor.close()

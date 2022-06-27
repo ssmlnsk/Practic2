@@ -202,9 +202,9 @@ class MainWindow(QMainWindow):
         """
         self.table_entry.clear()
         rec = self.facade.read_history()
-        self.table_entry.setColumnCount(5)
+        self.table_entry.setColumnCount(2)
         self.table_entry.setRowCount(len(rec))
-        self.table_entry.setHorizontalHeaderLabels(['ID', 'Время входа', 'Логин сотрудника'])
+        self.table_entry.setHorizontalHeaderLabels(['Время входа', 'Логин сотрудника'])
 
         for i, employee in enumerate(rec):
             for x, info in enumerate(employee):
@@ -838,7 +838,7 @@ class DialogAuth(QDialog):
                 if self.count_try_entry >= 3:
                     self.next_try = now_time+10
                 if password != '':  # если нет пароля, значит нет пользователя с введенным логином, поэтому записывать в историю входа не надо
-                    time_entry = time.strftime("%d:%m:%Y %H:%M:%S", t)    # время неуспешной попытки входа
+                    time_entry = time.strftime("%Y-%m-%d %H:%M:%S", t)    # время неуспешной попытки входа
                     self.parent().facade.insert_time_entry(auth_log, time_entry)
 
                 if self.count_try_entry == 2:
@@ -852,6 +852,7 @@ class DialogAuth(QDialog):
             elif password == auth_pas:
                 time_entry = time.strftime("%Y-%m-%d %H:%M:%S", t)    # время успешной попытки входа
                 self.parent().facade.insert_time_entry(auth_log, time_entry)
+                self.parent().updateTableHistory()
                 logging.log(logging.INFO, 'Вход выполнен')
                 fio = surname + ' ' + name + ' '+ lastname
                 self.parent().surname_emp = surname
@@ -895,6 +896,7 @@ class DialogNewVisiter(QDialog):
 
         if self.surname != '' and self.name != '' and self.lastName != '' and self.dateOfBirth != '' and self.email != '':
             self.facade.insert_visiter(self.surname, self.name, self.lastName, self.dateOfBirth, self.email)
+            self.parent().updateTableVisiters()
         else:
             self.mes_box('Заполните все поля!')
 
@@ -950,7 +952,7 @@ class DialogNewPicture(QDialog):
             technic = self.facade.get_technic_id(self.technic)
             type = self.facade.get_type_id(self.type)
             self.facade.insert_picture(self.name, self.year, painter, technic, type, self.photo)
-            self.parent.updateTablePictures()
+            self.parent().updateTablePictures()
         else:
             self.mes_box('Заполните все поля!')
 
@@ -1037,6 +1039,7 @@ class DialogNewPainter(QDialog):
 
         if self.surname != '' and self.name != '' and self.lastName != '' and self.dateOfBirth != '' and self.placeOfBirth != '' and self.genre != '' and self.style != '':
             self.facade.insert_painter(self.surname, self.name, self.lastName, self.dateOfBirth, self.placeOfBirth, self.genre, self.style)
+            self.parent().updateTablePainters()
         else:
             self.mes_box('Заполните все поля!')
 
